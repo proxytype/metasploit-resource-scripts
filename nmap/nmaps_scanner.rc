@@ -1,0 +1,34 @@
+<ruby>
+host = "192.168.1.10"
+nmapopts = "-PN -P0 -O -sSV"
+
+run_single("set RHOSTS #{host}")
+if (framework.datastore['RHOSTS'] == nil)
+	print_status("set RHOSTS before running, exit.")
+	return
+end
+
+begin
+	framework.db.hosts
+rescue ::ActiveRecord::ConnectionNotEstablished
+	print_error("database not connected, please run msfdb init, and check status msf > db_status")
+	return
+end
+
+print_line("starting nmap scanner")
+
+run_single("db_nmap -v -n #{nmapopts} #{framework.datastore['RHOSTS']}")
+
+framework.db.hosts.each do |host|
+	print_line("IP: #{host.address}")
+	print_line("OS: #{host.os_name}")
+	print_line("**************************************************************************")
+	print_line("--------------------------------------------------------------------------")
+	host.services.each do |serv|	
+		print_line("#{serv.name} #{serv.port.to_i} #{serv.proto}")
+		print_line("#-------------------------------------------------------------------------")
+	end
+end
+run_single("exit")
+
+</ruby>
