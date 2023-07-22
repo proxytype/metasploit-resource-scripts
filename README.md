@@ -5,6 +5,9 @@ This collection provides an initial set of resource examples and scripts to igni
 ## NMAP AUTOMATION
 simple scan automation using nmap, search for known services and write to framework database.
 
+## SSL CHECKER
+automation script for checking SSL weaknesses and hijacking msfconsole stdout using tempfile.
+
 **load from terminal**
 ```
 #: msfconsole -r <script>.rc
