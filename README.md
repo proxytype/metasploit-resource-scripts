@@ -8,6 +8,9 @@ simple scan automation using nmap, search for known services and write to framew
 ## SSL CHECKER
 automation script for checking SSL weaknesses and hijacking msfconsole stdout using tempfile.
 
+## SMB CHECKER
+automation script for detecting SMB service, exporting names, encryption, and version.
+
 **load from terminal**
 ```
 #: msfconsole -r <script>.rc
