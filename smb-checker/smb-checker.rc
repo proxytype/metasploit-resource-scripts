@@ -1,0 +1,31 @@
+<ruby>
+
+host = "192.168.1.14"
+
+begin
+
+    temp_file = Tempfile.new('metasploit_output', '/tmp')
+    $stdout_orig = $stdout.dup
+    $stdout.reopen(temp_file)
+
+    run_single("use auxiliary/scanner/smb/smb_version")
+    run_single("set RHOSTS #{host}")
+    run_single("run")
+
+    # restore original stdout
+    $stdout.reopen($stdout_orig)
+
+    # read the output from the temporary file and print each line
+    temp_file.rewind
+    temp_file.each_line do |line|
+        puts line
+    end
+
+rescue ::Exception => e
+  puts "Failed to load or run the auxiliary module: #{e.message}"
+ensure
+  # close and destroy temp file
+  temp_file.close
+  temp_file.unlink
+end
+</ruby>
